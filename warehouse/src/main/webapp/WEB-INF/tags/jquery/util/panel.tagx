@@ -1,0 +1,57 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:spring="http://www.springframework.org/tags" xmlns:c="http://java.sun.com/jsp/jstl/core" version="2.0">
+  <jsp:output omit-xml-declaration="yes" />
+  
+  <jsp:directive.attribute name="id" type="java.lang.String" required="true" rtexprvalue="true" description="The identifier for this tag (do not change!)" />
+  <jsp:directive.attribute name="title" type="java.lang.String" required="true" rtexprvalue="true" description="The page title (required)" />
+  <jsp:directive.attribute name="render" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
+  <jsp:directive.attribute name="openPane" type="java.lang.String" required="false" rtexprvalue="true" description="Control if the title pane is opened or closed by default (default: true)" />
+  <jsp:directive.attribute name="z" type="java.lang.String" required="false" description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
+
+  <jsp:directive.attribute name="css" type="java.lang.String" required="false" description="css" />
+    <jsp:directive.attribute name="issubmit" type="java.lang.Boolean" required="false" rtexprvalue="false" description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'false')" />
+  <c:if test="${empty render or render}">
+    <c:if test="${empty openPane}">
+      <c:set value="true" var="openPane" />
+    </c:if>
+  
+    <c:set var="sec_id">
+      <spring:escapeBody javaScriptEscape="true" >${id}</spring:escapeBody>
+    </c:set>
+    
+    <c:set var="sec_openPane">
+      <spring:escapeBody javaScriptEscape="true" >${openPane}</spring:escapeBody>
+    </c:set>
+    
+    <c:set var="sec_title">
+      <spring:escapeBody javaScriptEscape="true" >${title}</spring:escapeBody>
+    </c:set>
+
+    <section id="${sec_id}">
+       <div class="panel panel-primary" style="margin-bottom:5px" id="_title_${sec_id}_id">
+		  <div class="panel-head">
+		  
+		  <p style="padding-top: 7px;padding-left: 10px;">
+										<span class="panel-title" style="color: #182b56;font-family: Tahoma,Verdana,微软雅黑,新宋体;font-size: 12px; ">
+										${title}</span>
+									</p>
+		   
+		  </div>
+		  
+		  <div class="panel-body" style="${css}">
+		    <jsp:doBody />
+		  </div>
+		  <c:if test="${issubmit}">
+		  <div class="panel-footer">
+		  
+		<div class="row">
+			<div class="col-md-2 col-md-offset-5">
+				<button type="submit" class="btn btn-primary">æ¥è¯¢</button>
+			</div>
+		</div>
+	</div>
+	</c:if>
+		</div>
+
+    </section>
+  </c:if>
+</jsp:root>

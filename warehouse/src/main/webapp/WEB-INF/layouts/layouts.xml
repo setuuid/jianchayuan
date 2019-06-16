@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+    <definition name="public" template="/WEB-INF/layouts/login.jspx">
+        <put-attribute name="header" value="/WEB-INF/views/header.jspx"/>
+    </definition>
+	<definition name="zfyw" template="/WEB-INF/layouts/zfyw.jspx">
+    </definition>
+    <definition name="default" template="/WEB-INF/layouts/default.jsp">
+    </definition>
+    <definition name="easyuidefault" template="/WEB-INF/layouts/easyuidefault.jsp">
+    </definition>
+    <definition name="easyuidefault1" template="/WEB-INF/layouts/easyuidefault1.jsp">
+    </definition>
+    <definition name="index" template="/WEB-INF/views/index.jsp">
+    </definition>
+
+    <definition name="center" template="/WEB-INF/views/center.jsp">
+    </definition>
+
+    <definition name="newindex" template="/WEB-INF/views/newindex.jsp">
+    </definition>
+
+    <definition name="callcenter" template="/WEB-INF/views/callcenter.jsp">
+    </definition>
+</tiles-definitions>

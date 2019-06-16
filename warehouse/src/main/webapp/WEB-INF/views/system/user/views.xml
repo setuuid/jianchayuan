@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+    <definition extends="easyuidefault" name="system/user/query">
+        <put-attribute name="body" value="/WEB-INF/views/system/user/query.jsp"/>
+    </definition>
+     <definition extends="easyuidefault" name="system/user/query1">
+        <put-attribute name="body" value="/WEB-INF/views/system/user/query1.jsp"/>
+    </definition>
+    <definition extends="easyuidefault" name="system/user/edit">
+        <put-attribute name="body" value="/WEB-INF/views/system/user/edit.jsp"/>
+    </definition>
+    <definition extends="easyuidefault" name="system/user/userRole">
+        <put-attribute name="body" value="/WEB-INF/views/system/user/userRole.jsp"/>
+    </definition>
+    <definition  name="system/user/editPassword" template="/WEB-INF/views/system/user/editPassword.jsp">
+     
+    </definition>
+    
+</tiles-definitions>

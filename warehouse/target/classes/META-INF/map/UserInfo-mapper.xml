@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="UserInfo">
+	<resultMap type="UserInfo" id="userInfoMap">
+		<id column="userinfo_id" property="userinfo_id"/>
+		<result column="realname" property="realname"/>
+		<result column="sex" property="sex"/>
+		<result column="create_time" property="create_time"/>
+		<result column="last_login_time" property="last_login_time"/>
+		<result column="last_login_ip" property="last_login_ip"/>		
+		<association column="user_id" property="user" javaType="User">
+        	<id column="user_id" property="user_id"/>
+			<result column="username" property="username"/>
+			<result column="password" property="password"/>
+			<result column="isUse" property="isUse"/>
+			<result column="userip" property="userip"/>
+			<result column="ukey" property="ukey"/>
+			<result column="zpid" property="zpid"/>
+			<result column="zwmc" property="zwmc"/>
+			<result column="isld" property="isld"/>
+			<result column="isyjld" property="isyjld"/>
+			<result column="isdcsxld" property="isdcsxld"/>
+			<association column="department_id" property="department" javaType="Department">
+	       		<id column="department_id" property="department_id" />
+				<result column="department_code" property="department_code"/>
+				<result column="department_name" property="department_name"/>
+        	</association> 
+        	
+        </association>
+	</resultMap>
+	<select id="selectByCondition" resultMap="userInfoMap" parameterType="Map">
+		select * from (
+			select ui.*, us.username, us.isUse, us.password,d.department_name,us.ukey, ROW_NUMBER() OVER(order by us.username) r from sys_userINFO ui 
+			inner join sys_user us on ui.userinfo_id = us.userinfo_id
+			inner join sys_department d on d.department_id = us.department_id
+			<where>
+				us.isDel = 0 and d.isDel = 0
+				<if test="UserInfoForm.username!=null and UserInfoForm.username!=''">and us.username like '%'||#{UserInfoForm.username}||'%'</if>
+				<if test="UserInfoForm.isUse!=null and UserInfoForm.isUse!=''">and us.isUse = #{UserInfoForm.isUse}</if>
+				<if test="UserInfoForm.sex!=null and UserInfoForm.sex!=''">and ui.sex like '%'||#{UserInfoForm.sex}||'%'</if>
+				<if test="UserInfoForm.realname!=null and UserInfoForm.realname!=''">and ui.realname like '%'||#{UserInfoForm.realname}||'%'</if>
+				<if test="UserInfoForm.department_id!=null and UserInfoForm.department_id!=''">and d.department_id = #{UserInfoForm.department_id}</if>
+			</where>
+		) s where s.r between #{page.startPos} and ((#{page.pageSize}+#{page.startPos})-1)  
+	</select>
+	<select id="queryPage" resultMap="userInfoMap" parameterType="Map" flushCache="true">
+			select ui.*, us.username, us.isUse, us.password,d.department_name,us.ukey 
+			from sys_userINFO ui 
+			inner join sys_user us on ui.userinfo_id = us.userinfo_id
+			inner join sys_department d on d.department_id = us.department_id
+			where us.isDel = 0 and d.isDel = 0 
+			<if test="UserInfoForm.username!=null and UserInfoForm.username!=''">and us.username like '%'||#{UserInfoForm.username}||'%'</if>
+			<if test="UserInfoForm.isUse!=null and UserInfoForm.isUse!=''">and us.isUse = #{UserInfoForm.isUse}</if>
+			<if test="UserInfoForm.sex!=null and UserInfoForm.sex!=''">and ui.sex like '%'||#{UserInfoForm.sex}||'%'</if>
+			<if test="UserInfoForm.realname!=null and UserInfoForm.realname!=''">and ui.realname like '%'||#{UserInfoForm.realname}||'%'</if>
+			<if test="UserInfoForm.department_id!=null and UserInfoForm.department_id!=''">and d.department_id = #{UserInfoForm.department_id}</if>
+	</select>
+	<select id="countByCondition" resultType="int" parameterType="Map">
+		select count(*) from sys_user us
+		left join sys_department d on d.department_id = us.department_id
+		<where>
+			us.isDel = 0 and d.isDel = 0
+			<if test="UserInfoForm.username!=null and UserInfoForm.username!=''">and us.username like '%'||#{UserInfoForm.username}||'%'</if>
+			<if test="UserInfoForm.isUse!=null and UserInfoForm.isUse!=''">and us.isUse = #{UserInfoForm.isUse}</if>
+			<if test="UserInfoForm.sex!=null and UserInfoForm.sex!=''">and us.sex like '%'||#{UserInfoForm.sex}||'%'</if>
+			<if test="UserInfoForm.realname!=null and UserInfoForm.realname!=''">and us.realname like '%'||#{UserInfoForm.realname}||'%'</if>
+			<if test="UserInfoForm.department_id!=null and UserInfoForm.department_id!=''">and d.department_id = #{UserInfoForm.department_id}</if>
+		</where>		
+	</select>	
+	<insert id="insert" parameterType="UserInfo">
+		insert into sys_userinfo(
+			userinfo_id,user_id,realname,sex,create_time
+		)values(
+			#{userinfo_id},#{user.user_id},#{realname},#{sex},to_date(#{create_time},'yyyy-mm-dd')
+		)
+	</insert>
+	<select id="selectByPk"  resultMap="userInfoMap" parameterType="Map">
+		select us.username,us.password,us.isUse,us.userip,us.ukey,us.zpid,us.isld,us.isyjld,us.isdcsxld,us.zwmc,d.department_name,d.department_id, ui.* from sys_userINFO ui 
+		inner join sys_user us on ui.user_id = us.user_id 
+		inner join sys_department d on d.department_id = us.department_id
+		where ui.userinfo_id=#{userinfo_id}
+	</select>
+	<update id="update" parameterType="UserInfo">
+		update sys_userINFO
+		<set>
+			<if test="realname!=null and realname!=''">realname = #{realname},</if>
+			<if test="sex!=null and sex!=''">sex = #{sex},</if>
+			<if test="last_login_time!=null and last_login_time!=''">last_login_time = to_date(#{last_login_time},'YYYY-MM-DD'),</if>
+			<if test="last_login_ip!=null and last_login_ip!=''">last_login_ip = #{last_login_ip}</if>
+		</set>
+		where userinfo_id = #{userinfo_id}
+	</update>
+</mapper>

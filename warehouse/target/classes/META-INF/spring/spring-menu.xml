@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:jee="http://www.springframework.org/schema/jee"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xsi:schemaLocation="
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/jee
+		http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd"	>
+
+	<!-- 菜单-->
+	<bean class="com.dkd.oura.MenuBean">
+		<property name="sysMenuList">
+			<list>
+				<bean id="video" class="com.dkd.oura.SysMenu" p:order="01" p:cname="视频督察" p:authority="ROLE_SPDC" p:icon="glyphicon glyphicon-facetime-video"/>
+				<bean id="voice" class="com.dkd.oura.SysMenu" p:order="02" p:cname="语音督察" p:authority="ROLE_YYDC" p:icon="glyphicon glyphicon-phone-alt"/>
+				<bean id="visual" class="com.dkd.oura.SysMenu" p:order="07" p:cname="可视化督察调度" p:authority="ROLE_KSHDCDD" p:icon="glyphicon glyphicon-film"/>
+				<bean id="abc" class="com.dkd.oura.SysMenu" p:order="08" p:cname="960111举报投诉" p:authority="ROLE_960111JBTS" p:icon="glyphicon glyphicon-headphones"/>
+				<bean id="system" class="com.dkd.oura.SysMenu" p:order="09" p:cname="系统功能设置" p:authority="ROLE_SYSTEM_SYS" p:icon="glyphicon glyphicon-cog" p:xuhao="10">
+					<property name="items">
+						<list>
+							<bean class="com.dkd.oura.SysMenu" p:cname="用户管理" p:authority="ROLE_SYSTEM_sys_user" p:url="/user/query.do"/>
+							<bean class="com.dkd.oura.SysMenu" p:cname="角色管理" p:authority="ROLE_SYSTEM_sys_role" p:url="/role/query.do"/>
+							<bean class="com.dkd.oura.SysMenu" p:cname="部门管理" p:authority="ROLE_SYSTEM_SYS_DEP" p:url="/department/department.do"/>
+							<bean class="com.dkd.oura.SysMenu" p:cname="权限管理" p:authority="ROLE_SYSTEM_SYS_AUTH" p:url="/resource/resource.do"/>
+							<bean class="com.dkd.oura.SysMenu" p:cname="视频权限管理" p:authority="ROLE_SYSTEM_SYS_SPAUTH" p:url="http://10.88.24.231:7000/Easy7/apps/CMS/dijit/templates/WfrmMain_test.html" p:allURL="Y"/>
+							<bean class="com.dkd.oura.SysMenu" p:cname="字典管理" p:authority="ROLE_SYSTEM_SYS_DIC" p:url="/dictionary/dictionary.do"/>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+</beans>

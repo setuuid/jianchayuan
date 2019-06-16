@@ -1,0 +1,99 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:spring="http://www.springframework.org/tags" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+  <jsp:output omit-xml-declaration="yes" />
+
+  <jsp:directive.attribute name="maxPages" type="java.lang.Integer" required="true" rtexprvalue="true" description="The maximum number of pages available (ie tableRecordCount / size)" />
+  <jsp:directive.attribute name="page" type="java.lang.Integer" required="false" rtexprvalue="true" description="The current page (not required, defaults to 1)" />
+  <jsp:directive.attribute name="size" type="java.lang.Integer" required="false" rtexprvalue="true" description="The number of records per page (not required, defaults to 10)" />
+  <jsp:directive.attribute name="render" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
+ <jsp:directive.attribute name="colCounter" type="java.lang.Integer" required="false" rtexprvalue="true" description="The number of records per page (not required, defaults to 10)" />
+ <c:if test="${empty render or render}">
+	<script>
+		function tijiao(param1,param2){
+			
+	          	window.p.page.value=param1;
+	          	window.p.size.value=param2;
+	          	window.p.submit();
+		}
+		function numChange(){
+			tijiao(1,$("#numselect").val());
+			
+		}
+	</script>
+    <c:if test="${empty page || page lt 1}">
+      <c:set var="page" value="1" />
+    </c:if>
+
+    <c:if test="${empty size || size lt 1}">
+      <c:set var="size" value="10" />
+    </c:if>
+<c:if test="${maxPages gt 1}">
+    <spring:message code="list_size" var="list_size" htmlEscape="false" />
+	<spring:url value="" var="queryUrl">
+	<form method="post" id="p" action="">
+	<input type="hidden" id="page" name="page" value="${page}" />
+	<input type="hidden" id="size" name="size" value="${size}" />
+   <c:forEach items="${paramValues}" var="p">
+           <c:if test="${p.key ne 'page' and p.key ne 'size'}">
+				<c:forEach var='value' items='${p.value}'>
+				<input type="hidden" id="${p.key}" name="${p.key}" value="${value}" />
+				</c:forEach>
+			</c:if>
+		</c:forEach>
+</form>
+</spring:url>
+	
+   
+  </c:if>
+  <div id="example"  align="right">
+  
+  
+  </div>
+  <script>
+  var options = {
+		  currentPage:${page},
+          totalPages: ${maxPages},
+         
+         
+          itemTexts: function (type, page, current) {
+              switch (type) {
+              case "first":
+                  return "首页";
+              case "prev":
+                  return "上一页";
+              case "next":
+                  return "下一页";
+              case "last":
+                  return "末页";
+              case "page":
+                  return page;
+              }
+              },
+              
+              tooltipTitles: function (type, page, current) {
+
+                  switch (type) {
+                  case "first":
+                      return "首页";
+                  case "prev":
+                      return "上一页";
+                  case "next":
+                      return "下一页";
+                  case "last":
+                      return "末页";
+                  case "page":
+                      return (page === current) ? "当前页 " + page : "前往页" + page;
+                  }
+              }
+          ,  
+          onPageClicked: function (e, originalEvent, type, page) {  
+        	 
+        	  tijiao(page,${size});
+          } 
+      }
+ 
+
+      $('#example').bootstrapPaginator(options);
+      $('haha').html($("yinsheng").html());
+  </script>
+  </c:if>
+</jsp:root>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+  <jsp:output omit-xml-declaration="yes"/>
+
+  <!-- Jquery-Bootstrap -->
+  <spring:url value="/resources/styles/bootstrap/jquery-ui.bootstrap.css" var="jquery_ui_bootstrap_css_url" />
+  <link href="${jquery_ui_bootstrap_css_url}" media="screen" rel="stylesheet" type="text/css" />
+  
+  <!-- Bootstrap -->
+  <spring:url value="/resources/scripts/bootstrap/bootstrap.min.js" var="bootstrap_min_url" />
+  <script src="${bootstrap_min_url}" type="text/javascript">
+    <!--required for FF3 and Opera-->
+  </script>
+<spring:url value="/resources/plugins/datetimepiker/jquery.datetimepicker.js" var="jquery_datetimepicker_url" />
+  <script type="text/javascript" src="${jquery_datetimepicker_url}"></script>
+
+  <!-- Custom styles for offcanvas template -->
+  <spring:url value="/resources/scripts/bootstrap/offcanvas.js" var="offcanvas_url" />
+  <script src="${offcanvas_url}" type="text/javascript">
+    <!--required for FF3 and Opera-->
+  </script>
+
+
+
+</jsp:root>

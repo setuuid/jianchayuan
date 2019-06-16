@@ -1,0 +1,66 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
+
+<c:set var="wsdc" value="${pageContext.request.contextPath}" />
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+<meta content="IE=edge,Chrome=1" http-equiv="X-UA-Compatible" />
+
+<!-- Bootstrap -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title></title>
+ <link href="${wsdc}/resources/css/default.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="${wsdc}/resources/js/themes1/default/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="${wsdc}/resources/js/themes1/icon.css" />
+    <link rel="stylesheet" href="${wsdc}/resources/styles/jquery/jquery.ajax-combobox.css"></link>
+    <link rel="stylesheet" href="${wsdc}/resources/styles/zxdc/fyb.css""></link>
+        <link rel="stylesheet" href="${wsdc}/resources/plugins/ztree/css/zTreeStyle/zTreeStyle.css"></link>
+    <script type="text/javascript" src="${wsdc}/resources/js/jquery.min.js"></script>
+    <script type="text/javascript" src="${wsdc}/resources/js/jquery.easyui.min.js"></script>
+        <script type="text/javascript" src="${wsdc}/resources/js/locale/easyui-lang-zh_CN.js"></script>
+<SCRIPT type="text/javascript" src="${wsdc}/resources/plugins/jquery/jquery.ajax-combobox.min.js"></SCRIPT>
+
+<SCRIPT type="text/javascript" src="${wsdc}/resources/plugins/FusionCharts/fusioncharts.js"></SCRIPT>
+
+	<SCRIPT type="text/javascript" src="${wsdc}/resources/plugins/FusionCharts/fusioncharts.powercharts.js"></SCRIPT>
+
+	<SCRIPT type="text/javascript" src="${wsdc}/resources/plugins/FusionCharts/fusioncharts.widgets.js"></SCRIPT>
+
+<SCRIPT type="text/javascript" src="${wsdc}/resources/plugins/FusionCharts/themes/fusioncharts.theme.carbon.js"></SCRIPT>
+
+<SCRIPT type="text/javascript" src="${wsdc}/resources/plugins/FusionCharts/themes/fusioncharts.theme.fint.js"></SCRIPT>
+
+<SCRIPT type="text/javascript" src="${wsdc}/resources/plugins/FusionCharts/themes/fusioncharts.theme.ocean.js"></SCRIPT>
+
+<SCRIPT type="text/javascript" src="${wsdc}/resources/plugins/FusionCharts/themes/fusioncharts.theme.zune.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="${wsdc}/resources/plugins/jquery/ajaxfileupload1.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="${wsdc}/resources/plugins/ztree/js/jquery.ztree.all-3.5.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="${wsdc}/resources/scripts/zxdc/wtlx.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="${wsdc}/resources/scripts/zxdc/fyb.js"></SCRIPT>
+<style>
+.col-6{
+	width:50%;float:left;position: relative;display: block;
+	}
+	.col-3{
+	width:25%;float:left;position: relative;display: block;
+	}
+	.col-9{
+	width:75%;float:left;position: relative;display: block;
+	}
+	.col-12{
+	width:100%;float:left;position: relative;display: block;
+	}
+</style>
+</head>
+<body style="background-color:white;">
+	<tiles:insertAttribute name="body" />
+</body>
+</html>
+
+

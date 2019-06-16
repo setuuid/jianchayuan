@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Dictionary">	
+	<resultMap type="Dictionary" id="dictionaryMap">
+		<id column="dictionary_id" property="dictionary_id"/>
+		<result column="dictionary_code" property="dictionary_code"/>
+		<result column="dictionary_name" property="dictionary_name"/>
+		<result column="dictionary_order" property="dictionary_order"/>
+		<result column="isDel" property="isDel"/>
+		<result column="parent_id" property="parent_id"/>
+	</resultMap>
+	<select id="selectAll" resultMap="dictionaryMap">
+		select * from sys_dictionary where isDel != 1 order by dictionary_order
+	</select>
+	<select id="selectTreeGrid" resultMap="dictionaryMap">
+		select * from sys_dictionary  where isDel != 1 order by dictionary_order
+	</select>
+	
+	<select id="selectByCondition" resultMap="dictionaryMap" parameterType="map">
+	select case when (select count(1) from sys_dictionary where parent_id = d.dictionary_id) > 0
+			then 'closed' else 'open' end as state,
+			d.* from sys_dictionary d 
+			<where>
+				 d.isdel != 1 and d.parent_id = '0'
+				<if test="dictionary_name !=null and dictionary_name !=''">and d.dictionary_name like '%'||#{dictionary_name}||'%'</if>
+				<if test="dictionary_code!=null and dictionary_code!=''">and d.dictionary_code = #{dictionary_code}</if>
+			</where>
+		order by d.dictionary_order
+	</select> 
+	
+	<select id="countByCondition" resultType="int" parameterType="map">
+		select count(*) from sys_dictionary dic
+		<where>
+			 dic.isDel != 1
+			<if test="DictionaryForm!=null">
+				<if test="DictionaryForm.parent_id!=null and DictionaryForm.parent_id!=''">and dic.parent_id = #{DictionaryForm.parent_id}</if>	
+			</if>	
+			<if test="dictionary_code!=null and dictionary_code!=''">and dic.dictionary_code = #{dictionary_code}</if>
+		</where>
+	</select>
+	<select id="selectByPk" resultMap="dictionaryMap" parameterType="string">
+		select * from sys_dictionary dic where dic.dictionary_id = #{dictionary_id} and dic.isDel != 1
+	</select> 
+	<select id="selectByCode" resultMap="dictionaryMap" parameterType="string">
+		select * from sys_dictionary dic where dic.dictionary_code = #{dictionary_code} and dic.isDel != 1
+	</select>
+	<select id="selectByName" resultMap="dictionaryMap" parameterType="string">
+		select * from sys_dictionary dic where dic.dictionary_name = #{dictionary_name} and dic.isDel != 1
+	</select>
+	<insert id="insert" parameterType="Dictionary">
+		insert into sys_dictionary (
+			dictionary_id,dictionary_code,dictionary_name,dictionary_order,isDel,parent_id
+		) values (
+			#{dictionary_id},#{dictionary_code},#{dictionary_name},#{dictionary_order},#{isDel},#{parent_id}
+		)
+	</insert>
+	<update id="update" parameterType="Dictionary">
+		update sys_dictionary 
+		<set>   
+			<if test="dictionary_code!= null and dictionary_code!=''">dictionary_code = #{dictionary_code},</if>
+			<if test="dictionary_name!= null and dictionary_name!=''">dictionary_name = #{dictionary_name},</if>
+			<if test="dictionary_order!= null and dictionary_order!=''">dictionary_order = #{dictionary_order},</if>
+			<if test="isDel!= null and isDel!=''">isDel = #{isDel},</if>
+			<if test="parent_id!= null and parent_id!=''">parent_id = #{parent_id}</if>
+		</set>
+		where dictionary_id = #{dictionary_id}
+	</update> 
+	
+	<delete id="delete" parameterType="string">
+		update sys_dictionary set isDel = 1 where dictionary_id = #{dictionary_id} or parent_id = #{dictionary_id}
+	</delete>
+	
+	<!-- 自定义删除 -->
+	<delete id="delectByCode" parameterType="string">
+		update sys_dictionary set isDel = 1 where dictionary_id = #{dictionary_id} or parent_id = #{dictionary_id}
+	</delete>
+	
+	<select id="selectByParentId" resultMap="dictionaryMap" parameterType="string">
+		select * from sys_dictionary where isDel != 1 and parent_id = #{dictionary_id} 
+	</select> 
+	
+	<select id="selectChildsByPcode" resultType="Dictionary" parameterType="string">
+		select t1.* from sys_dictionary t 
+		inner join sys_dictionary t1 on t.dictionary_id=t1.parent_id and t1.isdel='0'
+		where t.dictionary_code=#{dictionary_code} and t.isdel='0'
+	</select>
+	
+	<!-- selectChilds -->
+	<select id="selectChilds" resultMap="dictionaryMap" parameterType="String">
+		select case when (select count(1) from sys_dictionary where parent_id = d.dictionary_id) > 0
+		then 'closed' else 'open' end as state,d.* 
+		from sys_dictionary d 
+		where d.parent_id = #{parent_id} order by d.dictionary_order
+		
+	</select>
+	
+	<select id="selectChildsByPid" resultType="Dictionary" parameterType="string">
+		select t1.* from sys_dictionary t 
+		inner join sys_dictionary t1 on t.dictionary_id=t1.parent_id and t1.isdel='0'
+		where t.dictionary_id=#{dictionary_id} and t.isdel='0'
+	</select>
+</mapper>

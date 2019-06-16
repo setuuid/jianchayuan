@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div id="footer" class=""
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+     xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:spring="http://www.springframework.org/tags"
+     version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+
+    <spring:url value="/" var="home"/>
+    <spring:url value="/resources/j_spring_security_logout" var="logout"/>
+
+    <div class="row">
+        <div class="col-md-2">
+            <ul class="nav navbar-nav" style="float: left;margin:0px;padding: 10px;margin-left: 100px;">
+                <li><span> <a href="${home}"> <spring:message code="button_home"/></a></span></li>
+                <c:if test="${pageContext['request'].userPrincipal != null}">
+                    <li style="border-left: 1px solid #fff;margin-left: 5px;"><!-- <c:out value=" | " /> --><span> <a
+                            style="margin-left: 5px;" href="${logout}"> <spring:message
+                            code="security_logout"/></a></span></li>
+                </c:if>
+            </ul>
+        </div>
+        <div class="col-md-7">
+            <p class="text-center" style="color: #fff;margin-top: 5px;">Copyright©2015 天津市公安局 All Rights Reserved</p>
+
+            <p class="text-center" style="color: #fff;">版本V1.0 建议使用谷歌浏览器并将分辨率设置为1366*768</p>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>

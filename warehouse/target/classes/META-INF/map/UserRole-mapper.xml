@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="UserRole">
+	<resultMap type="UserRole" id="userRoleMap">
+		<result column="user_id" property="user_id"/>
+		<result column="role_id" property="role_id"/>
+	</resultMap>
+	<insert id="insert" parameterType="UserRole">
+		insert into sys_user_role(user_id,role_id)
+		values(#{user_id},#{role_id})
+	</insert>
+	<delete id="delete" parameterType="string">
+		delete from sys_user_role where user_id = #{user_id}
+	</delete>
+	<!-- 批量插入 -->
+	<insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="false">
+		insert into sys_user_role(user_id,role_id)
+		<foreach collection="list" item="item" index="index" separator="union all">
+				  select 
+		 #{item.user_id},  
+		 #{item.role_id}
+		</foreach>
+	</insert>
+	
+	<select id="selectRoleByUserid" parameterType="String" resultType="String">
+		select role_id from sys_user_role where user_id=#{user_id}
+	</select>
+</mapper>

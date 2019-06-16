@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Crkjlb" >
+	<resultMap type="Crkjlb" id="crkjlbMap">
+		<id column="crkid" property="crkid" />
+		<result column="sbid" property="sbid"/>
+		<result column="hjxxid" property="hjxxid"/>
+		<result column="zt" property="zt"/>
+		<result column="lydw" property="lydw"/>
+		<result column="lx" property="lx"/>
+		<result column="lysl" property="lysl"/>
+		<result column="czr" property="czr"/>
+		<result column="isdel" property="isdel"/>
+	</resultMap>  
+
+	<select id="query" parameterType="string" resultMap="crkjlbMap">  
+    SELECT c1.`id` `crkid`,c1.`user_name`,c1.`address`,t2.`id`,t2.`card_no`,t2.`remark`   
+    FROM `crkjlb` c1,`sbb` t2   
+    WHERE c1.`id`=t2.`user_id` AND c1.`id`=#{id}  
+  	</select>  
+
+	
+	 
+	 <select id="selectByCondition" resultMap="crkjlbMap" parameterType="Map">
+		select c.*,s.pm as sbmc,h.ckmc as ckmc ,h.name as hjmc,d.department_name as lydwmc,
+		s.sccs,s.scrq,s.yws,s.yxq 
+		from crkjlb c 
+		left join sbb s on c.sbid = s.sbid and s.isdel='N'
+		left join hjxxld h on c.hjxxid = h.hjxxid and h.isdel='N'
+		left join sys_department d on c.lydw = d.department_id
+		<where>
+			c.isdel = 'N'
+			<if test="yjfl !=null and yjfl !=''">and s.yjfl = #{yjfl}</if>
+			<if test="ejfl !=null and ejfl !=''">and s.ejfl = #{ejfl}</if>
+			<if test="sjfl !=null and sjfl !=''">and s.sjfl = #{sjfl}</if>
+			<if test="pm !=null and pm !=''">and s.pm like '%${pm}%'</if>
+			<if test="sldw != null and sldw !=''">and d.department_id = #{sldw}</if>
+			<if test="zt != null and zt !=''">and c.zt = #{zt}</if>
+			<!-- 归还 -->
+			<if test="gh != null and gh !=''">and c.zt in ('1','3')</if>
+			<if test="lx != null and lx !=''">and c.lx = #{lx}</if>
+			<if test="wply != null and wply !=''">and s.wply = #{wply}</if>
+			<if test="beginDate != null">and c.czsj &gt;= #{beginDate} </if>
+			<if test="endDate != null ">and c.czsj &lt;= #{endDate}</if>
+		</where>
+		order by c.crkid
+	</select>          
+	     
+	     <!-- 查询 -->
+	 <select id="selectByConditionStorat" resultMap="crkjlbMap" parameterType="Map">
+		select c.*,s.pm as sbmc,h.ckmc ,h.name as hjmc,d.department_name as lydwmc,
+		s.sccs,s.scrq,s.yws,s.yxq 
+		from crkjlb c 
+		left join sbb s on c.sbid = s.sbid and s.isdel='N'
+		left join hjxxld h on c.hjxxid = h.hjxxid
+		left join sys_department d on c.lydw = d.department_id
+		<where>
+			c.isdel = 'N' 
+			<if test="yjfl !=null and yjfl !=''">and s.yjfl = #{yjfl}</if>
+			<if test="ejfl !=null and ejfl !=''">and s.ejfl = #{ejfl}</if>
+			<if test="sjfl !=null and sjfl !=''">and s.sjfl = #{sjfl}</if>
+			<if test="pm !=null and pm !=''">and s.pm like '%${pm}%'</if>
+			<if test="sldw != null and sldw !=''">and d.department_id = #{sldw}</if>
+			<if test="zt != null and zt !=''">and c.zt = #{zt}</if>
+			<if test="lx != null and lx !=''">and c.lx = #{lx}</if>
+			<if test="ckmc != null and ckmc !=''">and h.hjxxid = #{ckmc}</if>
+			<if test="wply != null and wply !=''">and s.wply = #{wply}</if>
+			<if test="beginDate != null">and c.czsj &gt;= #{beginDate} </if>
+			<if test="endDate != null ">and c.czsj &lt;= #{endDate}</if>
+		</where>
+		order by c.crkid
+	</select>               
+	
+
+
+	<select id="selectAll" resultMap="crkjlbMap">
+		select * from crkjlb
+	</select>
+	
+
+	<!-- 查询已入库的库存信息-->
+  	
+	<select id="selectAllExist" resultMap="crkjlbMap">
+		select * from crkjlb where (hjxxid and  sbid)is NOT null ;
+	</select>
+
+	<select id="selectByPk" resultMap="crkjlbMap" parameterType="String">
+		select c.* from crkjlb c where c.crkid = #{crkid} and c.isdel='N'
+	</select>
+
+	
+	
+	
+	<insert id="insert" parameterType="Crkjlb">
+		insert into crkjlb(
+			crkid,sbid,hjxxid,zt,lydw,lx,lysl,czr,czsj,isdel
+		)
+		values(
+			#{crkid},#{sbid},#{hjxxid},#{zt},#{lydw},#{lx},#{lysl},#{czr},#{czsj},'N'
+		)
+	</insert>
+	
+	<update id="update" parameterType="Crkjlb">
+		update crkjlb
+		<set>
+			<if test="sbid != null and sbid != ''">sbid = #{sbid},</if>
+			<if test="hjxxid != null and hjxxid != ''">hjxxid = #{hjxxid},</if>
+			<if test="zt != null and zt != ''">zt = #{zt},</if>
+			<if test="lydw != null and lydw != ''">lydw = #{lydw},</if>
+			<if test="lx != null and lx != ''">lx = #{lx},</if>
+			<if test="lysl != null and lysl != ''">lysl = #{lysl},</if>
+			<if test="czr != null and czr != ''">czr = #{czr},</if>
+			<if test="czsj != null">czsj = #{czsj}</if>
+		</set>
+		where crkid = #{crkid}
+	</update>
+	
+
+	 <delete id="logicDelete" parameterType="String">
+		update crkjlb set isDel="Y" where crkid=#{crkid} 
+	</delete> 
+	
+ 	
+
+	<delete id="delete" parameterType="String">
+		update crkjlb set isdel = 'Y' 
+		where crkid =#{crkid}
+	</delete>
+	
+
+	<select id="selectShowBycrk" parameterType="String" resultType="OutWarehouseForm">
+		select d.department_name,dic1.dictionary_name as yjfl,
+		dic2.dictionary_name as ejfl,dic3.dictionary_name as sjfl, c.*,s.*,h.*
+		from crkjlb c 
+		left join sbb s on s.sbid = c.sbid and s.isdel='N'
+		left join hjxxld h on c.hjxxid = h.hjxxid and h.isdel='N'
+		left join sys_department d on c.lydw = d.department_id
+		left join sys_dictionary dic1 on dic1.dictionary_id = s.yjfl and dic1.isDel=0
+		left join sys_dictionary dic2 on dic2.dictionary_id = s.ejfl and dic2.isDel=0
+		left join sys_dictionary dic3 on dic3.dictionary_id = s.sjfl and dic3.isDel=0
+		where c.crkid = #{id} and c.isdel='N'
+	</select>
+	
+
+	
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+    <definition extends="easyuidefault" name="business/ewm/bmewm">
+        <put-attribute name="body" value="/WEB-INF/views/business/ewm/bmewm.jsp"/>
+    </definition>
+    <!-- 部门二维码打印 -->
+    <definition extends="easyuidefault" name="business/ewm/bmewmdy">
+        <put-attribute name="body" value="/WEB-INF/views/business/ewm/bmewmdy.jsp"/>
+    </definition>
+    <definition extends="easyuidefault" name="business/ewm/sbewm">
+        <put-attribute name="body" value="/WEB-INF/views/business/ewm/sbewm.jsp"/>
+    </definition>
+    <!-- 设备二维码打印 -->
+    <definition extends="easyuidefault" name="business/ewm/sbewmdy">
+        <put-attribute name="body" value="/WEB-INF/views/business/ewm/sbewmdy.jsp"/>
+    </definition>
+    <definition extends="easyuidefault" name="business/ewm/hjewm">
+        <put-attribute name="body" value="/WEB-INF/views/business/ewm/hjewm.jsp"/>
+    </definition>
+    <!-- 货架二维码打印 -->
+    <definition extends="easyuidefault" name="business/ewm/hjewmdy">
+        <put-attribute name="body" value="/WEB-INF/views/business/ewm/hjewmdy.jsp"/>
+    </definition>
+</tiles-definitions>

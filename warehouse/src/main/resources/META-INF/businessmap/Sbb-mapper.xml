@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Sbb" >
+	<resultMap type="Sbb" id="sbbMap">
+		<id column="sbid" property="sbid"/>
+		<result column="pm" property="pm"/>
+		<result column="dhrq" property="dhrq"/>
+		<result column="yjfl" property="yjfl"/>
+		<result column="ejfl" property="ejfl"/>
+		<result column="sjfl" property="sjfl"/>
+		<result column="sccs" property="sccs"/>
+		<result column="scrq" property="scrq"/>
+		<result column="yws" property="yws"/>
+		<result column="yxq" property="yxq"/>
+		<result column="wbdh" property="wbdh"/>
+		<result column="zcxh" property="zcxh"/>
+		<result column="zcgg" property="zcgg"/>
+		<result column="xxcs" property="xxcs"/>
+		<result column="zcbm" property="zcbm"/>
+		
+		<result column="dqzt" property="dqzt"/>
+		<result column="wply" property="wply"/>
+		<result column="wplydw" property="wplydw"/>
+		<result column="cjsh" property="cjsh"/>
+		<result column="lx" property="lx"/>
+		
+		<result column="hjid" property="hjid"/>
+		<result column="sl" property="sl"/>
+		<result column="dw" property="dw"/>
+		<result column="isly" property="isly"/>
+		
+	</resultMap>
+
+	
+
+	<select id="selectTreeGrid" resultMap="sbbMap" parameterType="map">
+		
+			select s.sbid,s.pm,s.dhrq,d1.dictionary_name as yjfl,d2.dictionary_name as ejfl,d3.dictionary_name as sjfl,s.sccs,s.scrq,s.yws,s.yxq,s.wply from sbb s 
+			left join sys_dictionary d1 on d1.dictionary_id=s.yjfl
+			left join sys_dictionary d2 on d2.dictionary_id=s.ejfl
+			left join sys_dictionary d3 on d3.dictionary_id=s.sjfl
+			where 1=1 and s.isdel='N'
+					<if test="pm !=null and pm !=''">and s.pm like '%${pm}%'</if>	
+					<if test="wply !=null and wply !=''">and s.wply=#{wply}</if>	
+					<if test="yjfl !=null and yjfl !=''">and s.yjfl=#{yjfl}</if>
+					<if test="ejfl !=null and ejfl !=''">and s.ejfl=#{ejfl}</if>
+					<if test="sjfl !=null and sjfl !=''">and s.sjfl=#{sjfl}</if>
+					<if test="beginDate !=null">and s.dhrq  &gt;= #{beginDate}</if>
+					<if test="endDate !=null">and s.dhrq  &lt;= #{endDate}</if>
+		
+	</select>
+	
+	<insert id="insert" parameterType="Sbb">
+		insert into sbb(
+			sbid,pm,dhrq,yjfl,ejfl,sjfl,sccs,scrq,yws,yxq,wbdh,zcxh,zcgg,xxcs,zcbm,dqzt,wply,wplydw,cjsh,lx,hjid,sl,dw
+		)
+		values(
+			#{sbid},#{pm},#{dhrq},#{yjfl},#{ejfl},#{sjfl},#{sccs},#{scrq},#{yws},#{yxq},#{wbdh},#{zcxh},#{zcgg},#{xxcs},#{zcbm},#{dqzt},#{wply},#{wplydw},#{cjsh},#{lx},#{hjid},#{sl},#{dw}
+		)
+	</insert>
+	
+	
+	<update id="editSbxx" parameterType="Sbb">
+		update sbb
+		<set>   
+			<if test="pm!= null and pm!=''">pm = #{pm},</if>
+			<if test="dhrq!= null">dhrq = #{dhrq},</if>
+			yjfl = #{yjfl},
+			ejfl = #{ejfl},
+			sjfl = #{sjfl},
+			<if test="sccs!= null and sccs!=''">sccs = #{sccs},</if>
+			<if test="scrq!= null">scrq = #{scrq},</if>
+			<if test="yws!= null and yws!=''">yws = #{yws},</if>
+			<if test="yxq!= null">yxq = #{yxq},</if>
+			<if test="wbdh!= null and wbdh!=''">wbdh = #{wbdh},</if>
+			<if test="zcxh!= null and zcxh!=''">zcxh = #{zcxh},</if>
+			<if test="zcgg!= null and zcgg!=''">zcgg = #{zcgg},</if>
+			<if test="xxcs!= null and xxcs!=''">xxcs = #{xxcs},</if>
+			<if test="wply!= null and wply!=''">wply = #{wply},</if>
+			<if test="wplydw!= null and wplydw!=''">wplydw = #{wplydw},</if>
+			<if test="lx!= null and lx!=''">lx = #{lx},</if>
+			<if test="zcbm!= null and zcbm!=''">zcbm = #{zcbm}</if>
+			<if test="dw!= null and dw!=''">dw = #{dw}</if>
+			<if test="cjsh!= null and cjsh!=''">cjsh = #{cjsh}</if>
+			
+		</set>
+		where sbid=#{sbid}
+	</update>
+	
+	<update id="update" parameterType="Sbb">
+		update sbb
+		<set>   
+			<if test="dqzt != null ">dqzt = #{dqzt},</if>
+			sl = #{sl},
+			<if test="hjid != null ">hjid = #{hjid}</if>
+		</set>
+		where sbid=#{sbid}
+	</update>
+	
+	<select id="selectByPk" resultMap="sbbMap" parameterType="string">
+		select s.sbid,s.zcbm,s.lx,s.pm,d1.dictionary_name as yjfl,d2.dictionary_name as ejfl,d3.dictionary_name as sjfl,s.dhrq,s.sccs,s.scrq,s.yws,
+		s.yxq,s.wbdh,s.zcxh,s.zcgg,s.wply,s.wplydw,s.xxcs,s.dqzt,s.cjsh,s.hjid,s.sl,s.dw from sbb s
+		left join sys_dictionary d1 on d1.dictionary_id=s.yjfl
+		left join sys_dictionary d2 on d2.dictionary_id=s.ejfl
+		left join sys_dictionary d3 on d3.dictionary_id=s.sjfl
+		where s.sbid=#{sbid} and  s.isdel='N'
+	</select>
+	
+	<select id="selectShow" resultMap="sbbMap" parameterType="string">
+		select * from sbb s
+		where s.sbid=#{sbid} and  s.isdel='N'
+	</select>
+	
+	<delete id="delete" parameterType="string">
+		update sbb set isdel='Y' where sbid=#{sbid}
+	</delete>
+	
+	<!-- selectAll -->
+
+	<select id="selectAll" resultMap="sbbMap">
+		select * from sbb
+	</select>
+	
+
+	<!-- 根据id查询设备信息 -->
+	<select id="selectSbbId" resultMap="sbbMap" parameterType="string">
+		select * from sbb
+		<where>
+			<if test="sbid != null and sbid != ''">sbid = #{sbid}</if>
+		</where>
+	</select>
+	
+	
+	
+	
+<!--	<select id="selectSbbInfor" resultMap="sbbMap">
+ 	select * from sbb where sbid  not in (select sbid from crkjlb where sbid is NOT null and sbid!='');
+	select * from sbb
+	</select>
+ -->
+	
+	
+	<select id="selectSbCombobox" resultMap="sbbMap" parameterType="map">
+		select * from sbb s
+		<where>
+			s.isdel = 'N'
+			<if test="wply !=null and wply !=''">and s.wply = #{wply}</if>
+			<if test="lx !=null and lx !=''">and s.lx = #{lx}</if>
+			<if test="dqzt !=null and dqzt !=''">and s.dqzt = #{dqzt}</if>
+			<if test="gh !=null and gh !=''">and s.dqzt in ('1','3')</if>
+			<if test="isly !=null and isly !=''">and s.isly = #{isly}</if>
+		</where>
+		order by s.pm
+	</select>
+	
+	<select id="selectMaxNo" resultType="String" parameterType="map">
+		select max(sbid) from sbb where sbid like #{lx};
+	</select>
+
+	
+	<update id="updateOutWarehouse" parameterType="Sbb">
+		update sbb
+		<set>   
+			<if test="dqzt != null and dqzt !=''">dqzt = #{dqzt},</if>
+			sl = #{sl},
+			<if test="hjid != null and hjid != ''">hjid = #{hjid},</if>
+			<if test="isly != null and isly != ''">isly = #{isly}</if>
+		</set>
+		where sbid=#{sbid}
+	</update>
+	<!-- 设备二维码信息 -->
+	<select id="selectEwmSb" resultType="EwmForm" parameterType="list">
+		select s.sbid as sb_id,s.pm as sb_name,d.dictionary_name as sb_fl,
+		s.zcxh as sb_xh,s.sccs as sb_sccs,
+		CASE WHEN LENGTH(s.yws)>66 then substring(s.yws,1,22) ELSE s.yws end as sb_yws,
+		s.yxq as sb_yxq,s.wbdh as sb_wbdh
+		from sbb s
+		left join sys_dictionary d on s.yjfl = d.dictionary_id and d.isDel=0
+		where s.sbid in 
+		<foreach collection="list" item="sbid" open="(" close=")" separator=",">
+			#{sbid}
+		</foreach>
+		and s.isdel='N'
+	</select>
+
+	<update id="updateSbSl" parameterType="map">
+		update sbb 
+		<set>   
+			sl = #{newsl}
+		</set>
+		where sbid=#{sbid}
+	</update>
+
+	<update id="updatesl" parameterType="map">
+		update sbb 
+		<set>   
+			sl = #{oldsl}
+		</set>
+		where sbid=#{sbid}
+	</update>
+	<select id="exportFind" parameterType="map" resultMap="sbbMap">
+		select s.sbid,s.pm,s.dhrq,d1.dictionary_name as yjfl,d2.dictionary_name as ejfl,d3.dictionary_name as sjfl,s.sccs,s.scrq,s.yws,s.yxq from sbb s 
+			left join sys_dictionary d1 on d1.dictionary_id=s.yjfl
+			left join sys_dictionary d2 on d2.dictionary_id=s.ejfl
+			left join sys_dictionary d3 on d3.dictionary_id=s.sjfl
+			where 1=1 and s.isdel='N'
+			<if test="pm !=null and pm !=''">and s.pm like '%${pm}%'</if>		
+			<if test="yjfl !=null and yjfl !=''">and s.yjfl=#{yjfl}</if>
+			<if test="ejfl !=null and ejfl !=''">and s.ejfl=#{ejfl}</if>
+			<if test="sjfl !=null and sjfl !=''">and s.sjfl=#{sjfl}</if>
+			<if test="beginDate !=null">and s.dhrq  &gt;= #{beginDate}</if>
+			<if test="endDate !=null">and s.dhrq  &lt;= #{endDate}</if>
+	</select>
+</mapper>

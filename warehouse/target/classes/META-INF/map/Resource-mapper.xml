@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Resource">
+	<resultMap type="Resource" id="resourceMap">
+		<id column="resource_id" property="resource_id"/>
+		<result column="resource_code" property="resource_code"/>
+		<result column="resource_name" property="resource_name"/>
+		<result column="type" property="type"/>
+		<result column="value" property="valuea"/>
+		<result column="parent_id" property="parent_id"/>
+		<result column="seq" property="seq"/>
+		<result column="resource_icon" property="resource_icon"/>
+		<result column="status" property="status"/>
+		<result column="state" property="state"/>
+		<!--  <collection property="resources" column="resource_id" select="getChildrenModues" />   -->
+		<!-- <collection  property="resources" javaType="Resource" >
+			<id column="resource_id1" property="resource_id"/>
+			<result column="resource_name1" property="resource_name"/>
+			<result column="resource_code1" property="resource_code"/>
+			<result column="type" property="type"/>
+			<result column="value1" property="valuea"/>
+			<result column="parent_id1" property="parent_id"/>
+			<result column="seq1" property="seq"/>
+			<result column="resource_icon1" property="resource_icon"/>
+			<result column="state1" property="state"/>
+		</collection> -->
+	</resultMap>
+	<select id="selectAll" resultMap="resourceMap">
+		select * from sys_resource 
+	</select>
+	<select id="selectByCondition" resultMap="resourceMap" parameterType="map">
+			select re.* from sys_resource re 
+			<where>
+				<if test="parent_id!=null and parent_id!=''">re.parent_id = #{parent_id}</if>		
+			</where>
+	</select>
+	<select id="countByCondition" resultType="int" parameterType="map">
+		select count(*) from sys_resource re
+		<where>
+			<if test="ResourceForm!=null">
+				<if test="ResourceForm.parent_id!=null and ResourceForm.parent_id!=''">re.parent_id = #{ResourceForm.parent_id}</if>	
+			</if>	
+			<if test="resource_code!=null and resource_code!=''">and re.resource_code = #{resource_code}</if>
+		</where>
+	</select>
+	<select id="selectByPk" resultMap="resourceMap" parameterType="string">
+		<!-- select re.*,re1.resource_id as resource_id1,re1.resource_code as resource_code1 ,
+		re1.resource_name as resource_name1,re1.type as type1,re1.value as value1,
+		re1.parent_id as parent_id1,re1.seq as seq1,re1.resource_icon as resource_icon1,
+		re1.state as state1
+		from sys_resource re ,sys_resource re1
+		where re.resource_id = #{resource_id} and re.resource_id = re1.parent_id -->
+		select * from sys_resource re where re.resource_id = #{resource_id}
+	</select>  
+	<insert id="insert" parameterType="Resource">
+		insert into sys_resource (
+			resource_id,resource_code,resource_name,type,value,parent_id,
+			seq,resource_icon,state
+		) values (
+			#{resource_id},#{resource_code},#{resource_name},#{type},#{valuea},#{parent_id},
+			#{seq},#{resource_icon},#{state}
+		)
+	</insert>
+	<update id="update" parameterType="Resource">
+		update sys_resource 
+		<set>   
+			<if test="resource_code!= null and resource_code!=''">resource_code = #{resource_code},</if>
+			<if test="resource_name!= null and resource_name!=''">resource_name = #{resource_name},</if>
+			<if test="type!= null and type!=''">type = #{type},</if>
+			<if test="valuea!= null and valuea!=''">value = #{valuea},</if>
+			<if test="parent_id!= null and parent_id!=''">parent_id = #{parent_id},</if>
+			<if test="seq != null and seq !=''">seq = #{seq},</if>
+			<if test="resource_icon != null and resource_icon !=''">resource_icon = #{resource_icon},</if>
+			<if test="state != null and state !=''">state = #{state}</if>
+		</set>
+		where resource_id = #{resource_id}
+	</update> 
+	<delete id="delete" parameterType="string">
+		delete from sys_resource where resource_id = #{resource_id} or  parent_id = #{resource_id}
+	</delete>
+	<!-- 分页查询树形资源 -->
+	<select id="selectTreeGrid" resultMap="resourceMap" parameterType="map">
+			select case when (select count(1) from sys_resource where parent_id = re.resource_id) > 0
+			then 'closed' else 'open' end as status,
+			re.* from sys_resource re 
+			<where>
+				<if test="parent_id !=null and parent_id !=''">re.parent_id = #{parent_id}</if>		
+				<if test="resource_name !=null and resource_name !=''">re.resource_name = #{resource_name}</if>		
+			</where>
+	</select>
+	
+	<select id="allTree" resultMap="resourceMap" parameterType="String">
+		select * from  sys_resource r 
+		<if test="_parameter !=null and _parameter !=''">where r.type= #{_parameter}</if>
+		  order by r.seq
+	</select>
+	
+	<!-- selectChilds -->
+	<select id="selectChilds" resultMap="resourceMap" parameterType="String">
+		select case when (select count(1) from sys_resource where parent_id = re.resource_id) > 0
+		then 'closed' else 'open' end as status,re.* 
+		from sys_resource re 
+		where re.parent_id = #{parent_id} order by re.seq
+		
+	</select>
+	
+	
+</mapper>

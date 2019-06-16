@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="User">
+	<resultMap type="User" id="userMap">
+		<id column="user_id" property="user_id"/>
+		<result column="username" property="username"/>
+		<result column="password" property="password"/>
+		<result column="isUse" property="isUse"/>
+		<result column="isDel" property="isDel"/>
+		<result column="userip" property="userip"/>
+		<result column="ism" property="ism"/>
+		<result column="realname" property="realname"/>
+		<result column="sex" property="sex"/>
+		<result column="create_time" property="create_time"/>
+		<result column="phone" property="phone"/>
+		<result column="department_id" property="department_id"/>
+        <association column="department_id" property="department" javaType="Department">
+       		<id column="department_id" property="department_id" />
+			<result column="department_code" property="department_code"/>
+			<result column="department_name" property="department_name"/>
+        </association> 
+		<collection property="userRoles" ofType="Role" column="userId">
+        	<id column="role_id" property="role_id"/>
+			<result column="role_name" property="role_name"/>
+			<result column="description" property="description"/>
+			<collection property="resources" ofType="Resource" column="role_id">
+	        	<id column="resource_id" property="resource_id"/>
+				<result column="resource_code" property="resource_code"/>
+				<result column="resource_name" property="resource_name"/>
+				<result column="type" property="type"/>
+				<result column="value" property="value"/>
+				<result column="parent_id" property="parent_id"/>
+				<result column="seq" property="seq"/>
+       		 </collection> 
+        </collection> 	
+	</resultMap>
+	
+	<select id="userLogin" resultMap="userMap" parameterType="string">
+		select * from sys_user u
+		inner join sys_user_role ur on ur.user_id = u.user_id
+		inner join sys_role r on r.role_id = ur.role_id
+		inner join sys_role_resource rr on rr.role_id = r.role_id
+		inner join sys_resource re on re.resource_id = rr.resource_id  
+		left join sys_department d on d.department_id = u.department_id and d.isDel = 0
+		where u.username = #{username} and u.isUse = 1 and u.isDel = 0 
+	</select>
+	<select id="userLoginByUkey" resultMap="userMap" parameterType="string">
+		select * from sys_user u
+		inner join sys_user_role ur on ur.user_id = u.user_id
+		inner join sys_role r on r.role_id = ur.role_id
+		inner join sys_role_resource rr on rr.role_id = r.role_id
+		inner join sys_resource re on re.resource_id = rr.resource_id
+		inner join sys_userinfo ui on ui.userinfo_id = u.userinfo_id
+		inner join sys_department d on d.department_id = u.department_id
+		where u.ukey = #{ukey} and u.isUse = 1 and u.isDel = 0 and d.isDel = 0
+	</select>
+	<select id="countByCondition" resultType="int" parameterType="Map">
+		select count(*) from sys_user us
+		left join sys_department d on d.department_id = us.department_id and d.isDel = 0
+		<where>
+			us.isDel = 0 
+			<if test="UserInfoForm.username!=null and UserInfoForm.username!=''">and us.username like '%'||#{UserInfoForm.username}||'%'</if>
+			<if test="UserInfoForm.isUse!=null and UserInfoForm.isUse!=''">and us.isUse = #{UserInfoForm.isUse}</if>
+			<if test="UserInfoForm.sex!=null and UserInfoForm.sex!=''">and us.sex like '%'||#{UserInfoForm.sex}||'%'</if>
+			<if test="UserInfoForm.realname!=null and UserInfoForm.realname!=''">and us.realname like '%'||#{UserInfoForm.realname}||'%'</if>
+			<if test="UserInfoForm.department_id!=null and UserInfoForm.department_id!=''">and d.department_id = #{UserInfoForm.department_id}</if>
+		</where>		
+	</select>
+	<!-- selectByCondition -->
+	<select id="selectByCondition" resultMap="userMap" parameterType="Map">
+		select us.*,d.department_name from sys_user us 
+		left join sys_department d on d.department_id = us.department_id and d.isDel = 0
+		<where>
+			us.isDel = 0 
+				<if test="username!=null and username!=''">and us.username like '%${username}%'</if>
+				<if test="isUse!=null and isUse!=''">and us.isUse = #{isUse}</if>
+				<if test="sex!=null and sex!=''">and us.sex like '%${sex}%'</if>
+				<if test="realname!=null and realname!=''">and us.realname like '%${realname}%'</if>
+				<if test="department_id != null and department_id !=''">and d.department_id = #{department_id}</if>
+		</where>
+		order by us.username
+	</select>
+	<insert id="insert" parameterType="User">
+		insert into sys_user (
+			user_id,username,password,realname,isUse,department_id,isDel,userip,ism,
+			sex,create_time,phone
+		)values(
+			#{user_id},#{username},#{password},#{realname},#{isUse},#{department_id},'0',#{userip},
+			'N',#{sex},#{create_time},#{phone}
+		)
+	</insert>
+	<update id="update" parameterType="User">
+		update sys_user
+		<set>
+			<if test="username!= null and username!=''"> username = #{username},</if>
+			<if test="isUse!= null and isUse!=''"> isUse = #{isUse},</if>
+			<if test="department_id != null and department_id !=''"> department_id = #{department_id},</if>
+			<if test="password != null and password !=''">password = #{password},</if>
+			<if test="userip !=null and userip !=''">userip=#{userip},</if>
+			<if test="ism !=null and ism !=''">ism=#{ism},</if>
+			<if test="realname !=null and realname !=''">realname=#{realname},</if>
+			<if test="sex !=null and sex !=''">sex=#{sex},</if>
+			<if test="phone !=null and phone !=''">phone=#{phone}</if>
+		</set>
+		where user_id = #{user_id}
+	</update>
+	<delete id="delete" parameterType="string">
+		update sys_user set isDel = 1 where user_id = #{user_id}
+	</delete>
+	<select id="selectByPk" resultMap="userMap" parameterType="string">
+		select * from sys_user u
+		left join sys_user_role ur on ur.user_id = u.user_id
+		left join sys_role r on r.role_id = ur.role_id
+		where u.user_id = #{user_id}
+	</select>
+	<update id="updateDepartmentRole" parameterType="User">
+		update sys_user set departmentIds=#{departmentIds} where user_id=#{user_id}
+	</update>
+	<select id="getUsersByJhs" resultMap="userMap" parameterType="java.util.List">
+		select * from sys_user u
+		where u.username in(
+		<foreach collection="list" item="item" separator=",">
+		 #{item}
+		</foreach>
+		)
+	</select>
+	<!-- checkUser -->
+	<select id="checkUser" parameterType="User" resultMap="userMap">
+		select * from sys_user where username = #{username} and isdel = 0
+		<if test="user_id != null and user_id != ''">and user_id != #{user_id}</if>
+	</select>
+	<!-- selectUserMenu -->
+	<select id="selectUserMenu" resultMap="userMap" parameterType="String">
+		select * from sys_user u
+		inner join sys_user_role ur on ur.user_id = u.user_id
+		inner join sys_role r on r.role_id = ur.role_id
+		inner join sys_role_resource rr on rr.role_id = r.role_id
+		inner join sys_resource re on re.resource_id = rr.resource_id and re.type='RESOURCE_TYPE_MENU' 
+		where u.user_id = #{user_id} and u.isUse = 1 and u.isDel = 0 order by re.seq
+	</select>
+</mapper>

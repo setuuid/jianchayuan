@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+    <definition extends="easyuidefault" name="system/role/query">
+        <put-attribute name="body" value="/WEB-INF/views/system/role/query.jsp"/>
+    </definition>
+    <definition extends="easyuidefault" name="system/role/roleGrant">
+        <put-attribute name="body" value="/WEB-INF/views/system/role/roleGrant.jsp"/>
+    </definition>
+    <definition extends="easyuidefault" name="system/role/edit">
+        <put-attribute name="body" value="/WEB-INF/views/system/role/edit.jsp"/>
+    </definition>
+    <definition extends="default" name="system/role/roletree">
+        <put-attribute name="body" value="/WEB-INF/views/system/role/roletree.jsp"/>
+    </definition>
+</tiles-definitions>

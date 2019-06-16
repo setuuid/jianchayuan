@@ -1,0 +1,79 @@
+body {
+	background-color: #fff;
+	color: #000;
+	font-size: 14px;
+	font-family: 寰蒋闆呴粦;
+}
+a,a:hover,a:active,a:link,a:visited {
+	text-decoration: none;
+}
+/*宸︿晶鑿滃崟*/
+.sidebar-menu{
+	border: 1px solid #e1e1e1;
+	border-top-width: 0px;
+	border-radius: 6px;
+	margin-left: 10px;
+}
+/* .nav-list li:first-child a{
+	border-radius: 6px 6px 0 0;
+}
+.nav-list li:last-child a{
+	border-radius: 0 0 6px 6px;
+} */
+.sidebar-list li a{
+	border-radius: 6px 6px 6px 6px;
+}
+.menu-second li a{
+	border-radius: 0;
+}
+.menu-second li:last-child a{
+	border-radius: 0;
+} 
+/*涓�骇鑿滃崟*/
+.menu-first{
+	background-color: #fff;
+	border-top: 1px solid #e1e1e1;
+	font-weight: bold;
+	display: block;
+}
+/*涓�骇鑿滃崟榧犳爣鍒掕繃鐘舵�*/
+.menu-first:hover{
+	border-bottom: 1px solid #337ab7;
+}
+/*浜岀骇鑿滃崟*/
+.menu-second li a{
+	border-top: 1px solid #e1e1e1;
+}
+/*浜岀骇鑿滃崟榧犳爣鍒掕繃鏍峰紡*/
+.menu-second li a:hover {
+	text-decoration: none;
+	background-color: #e1e1e1;
+	border-right: 2px solid #337ab7;
+}
+
+.ui-layout-toggler {  
+	border: 0.5px solid #cccccc;   
+	background-color: #000000;  
+	opacity: .60;  
+	filter:  alpha(opacity=60);  
+}  
+.ui-layout-toggler .content {   
+	color: #ffffff;       
+}
+ .ui-layout-resizer  {   
+	background: #F1F1F1;  
+}  
+.navbar {
+	border-radius: 0;
+}
+.navbar-default {
+	background-color: #0050ef !important;
+	border-color: #0050ef;
+	height: 100%
+}
+.navbar-default .navbar-brand {
+	color:#ffffff;
+}
+.navbar-default .navbar-nav>li>a {
+	color:#ffffff;
+}

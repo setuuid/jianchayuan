@@ -1,0 +1,225 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:spring="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+  <jsp:directive.tag import="java.util.ArrayList" />
+  <jsp:output omit-xml-declaration="no" />
+
+  <jsp:directive.attribute name="id" type="java.lang.String" required="true" rtexprvalue="true" description="The identifier for this tag (do not change!)" />
+  <jsp:directive.attribute name="data" type="java.util.Collection" required="true" rtexprvalue="true" description="The collection to be displayed in the table" />
+  <jsp:directive.attribute name="path" type="java.lang.String" required="true" rtexprvalue="true" description="Specify the URL path" />
+  <jsp:directive.attribute name="typeIdFieldName" type="java.lang.String" required="false" rtexprvalue="true" description="The identifier field name for the type (defaults to 'id')" />
+  <jsp:directive.attribute name="create" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'create' link into table (default true)" />
+  <jsp:directive.attribute name="update" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'update' link into table (default true)" />
+  <jsp:directive.attribute name="delete" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'delete' link into table (default true)" />
+  <jsp:directive.attribute name="render" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
+  <jsp:directive.attribute name="z" type="java.lang.String" required="false" description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
+ <jsp:directive.attribute name="isneedcon" type="java.lang.String" required="false" description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
+ <jsp:directive.attribute name="isclick" type="java.lang.Boolean" required="false" description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
+<jsp:directive.attribute name="islist" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'delete' link into table (default true)" />
+  <jsp:directive.attribute name="isshowlist" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'delete' link into table (default true)" />
+   <jsp:directive.attribute name="isdl" type="java.lang.Boolean" required="false" rtexprvalue="false" description="Include 'delete' link into table (default true)" />
+  <jsp:directive.attribute name="noshow" type="java.lang.Boolean" required="false" rtexprvalue="false" description="Include 'delete' link into table (default true)" />
+ 
+  <jsp:directive.attribute name="ajhas" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'delete' link into table (default true)" />
+  <c:if test="${empty render or render}">
+	
+    <c:set var="columnProperties" scope="request" />
+    <c:set var="columnLabels" scope="request" />
+    <c:set var="columnMaxLengths" scope="request" />
+    <c:set var="columnTypes" scope="request" />
+    <c:set var="columnDatePatterns" scope="request" />
+	<c:set var="showurllinks" scope="request"/>
+    <jsp:doBody />
+
+    <c:if test="${empty typeIdFieldName}">
+      <c:set var="typeIdFieldName" value="id" />
+    </c:if>
+
+    <c:if test="${empty update}">
+      <c:set var="update" value="true" />
+    </c:if>
+     <c:if test="${empty noshow}">
+      <c:set var="noshow" value="false" />
+    </c:if>
+    <c:if test="${empty isdl}">
+      <c:set var="isdl" value="false" />
+    </c:if>
+	<c:if test="${empty islist}">
+      <c:set var="islist" value="false" />
+    </c:if>
+    <c:if test="${empty isshowlist}">
+      <c:set var="isshowlist" value="true" />
+    </c:if>
+    <c:if test="${empty delete}">
+      <c:set var="delete" value="true" />
+    </c:if>
+   
+    <spring:message var="typeName" code="menu_item_${fn:toLowerCase(fn:split(id,'_')[fn:length(fn:split(id,'_')) - 1])}_new_label" htmlEscape="false" />
+    <c:set var="lengths" value="${fn:split(columnMaxLengths, '&#9999;')}" scope="request" />
+    <c:set var="types" value="${fn:split(columnTypes, '&#9999;')}" scope="request" />
+    <c:set var="patterns" value="${fn:split(columnDatePatterns, '&#9999;')}" scope="request" />
+    <c:set var="columnLabels" value="${fn:split(columnLabels, '&#9999;')}" scope="request" />
+    <c:set var="showurllinks" value="${fn:split(showurllinks, '&#9999;')}" scope="request" />
+	 <spring:eval var="colCounter" expression="1" />
+
+  <table class="table table-striped">
+      <c:forEach items="${data}" var="item">
+         <c:set var="itemId"><spring:eval expression="item[typeIdFieldName]"/></c:set>
+   <c:if test="${isclick}">
+       
+       <c:if test="${isdl==false }">
+          <c:forTokens items="${columnProperties}" delims="${'&#9999;'}" var="column" varStatus="num">
+          <tr >
+            <c:set var="columnMaxLength" value="${lengths[num.count-1]}" />
+            <c:set var="columnType" value="${types[num.count-1]}" />
+            <c:set var="columnDatePattern" value="${patterns[num.count-1]}" />
+             <c:set var="showname" value="${columnLabels[num.count-1]}" />
+             <c:set var="showurllink" value="${showurllinks[num.count-1]}" />
+              <c:choose>
+                <c:when test="${columnType eq 'date'}">
+                  <spring:escapeBody>
+                    <fmt:formatDate value="${item[column]}" pattern="${fn:escapeXml(columnDatePattern)}" var="colTxt" />
+                  </spring:escapeBody>
+                </c:when>
+                <c:when test="${columnType eq 'calendar'}">
+                  <spring:escapeBody>
+                    <fmt:formatDate value="${item[column].time}" pattern="${fn:escapeXml(columnDatePattern)}" var="colTxt"/>
+                  </spring:escapeBody>
+                </c:when>
+                <c:otherwise>
+                  <c:set var="colTxt">
+                    <spring:eval expression="item[column]" htmlEscape="false" />
+                  </c:set>
+                </c:otherwise>
+              </c:choose>
+              <c:if test="${columnMaxLength ge 0}">
+                <c:set value="${fn:substring(colTxt, 0, columnMaxLength)}" var="colTxt" />
+              </c:if><td width="120px;" style="text-align: right;"><span class="text-primary" >
+               <c:out value="${showname}"></c:out></span>
+              <c:out value=":" /></td>
+              <td>
+              <c:choose>
+              	<c:when test="${showurllink eq 'y'}">
+              		<a   href="http://10.88.24.231:7000/Easy7/apps/WebClient/dijit/templates/WfrmVideoEx_test.html?gbId=${item['jzcode']}&amp;gbCaption=${item['sldwmc']}" target="_blank"><span class="text-primary" ><c:out value="${colTxt}" /></span></a>
+              	</c:when>
+              	<c:otherwise>
+              		<c:out value="${colTxt}" />
+              	</c:otherwise>
+              </c:choose>
+             </td>
+            </tr>
+            
+          </c:forTokens>
+          </c:if>
+          <c:if test="${isdl}">
+          <c:forTokens items="${columnProperties}" delims="${'&#9999;'}" var="column" varStatus="num">
+        <c:if test="${num.count mod 2==1 }">
+       	<c:out value="&lt;tr&gt;" escapeXml="false" ></c:out>
+          </c:if>
+            <c:set var="columnMaxLength" value="${lengths[num.count-1]}" />
+            <c:set var="columnType" value="${types[num.count-1]}" />
+            <c:set var="columnDatePattern" value="${patterns[num.count-1]}" />
+             <c:set var="showname" value="${columnLabels[num.count-1]}" />
+             <c:set var="showurllink" value="${showurllinks[num.count-1]}" />
+              <c:choose>
+                <c:when test="${columnType eq 'date'}">
+                  <spring:escapeBody>
+                    <fmt:formatDate value="${item[column]}" pattern="${fn:escapeXml(columnDatePattern)}" var="colTxt" />
+                  </spring:escapeBody>
+                </c:when>
+                <c:when test="${columnType eq 'calendar'}">
+                  <spring:escapeBody>
+                    <fmt:formatDate value="${item[column].time}" pattern="${fn:escapeXml(columnDatePattern)}" var="colTxt"/>
+                  </spring:escapeBody>
+                </c:when>
+                <c:otherwise>
+                  <c:set var="colTxt">
+                    <spring:eval expression="item[column]" htmlEscape="false" />
+                  </c:set>
+                </c:otherwise>
+              </c:choose>
+              <c:if test="${columnMaxLength ge 0}">
+                <c:set value="${fn:substring(colTxt, 0, columnMaxLength)}" var="colTxt" />
+              </c:if><td width="40px;" style="text-align: left;"><span class="text-primary" >
+               <c:out value="${showname}"></c:out></span>
+              <c:out value=":" /></td>
+              <td style="word-wrap: break-word;text-align: left " width="200px;">
+              <c:choose>
+              	<c:when test="${showurllink eq 'y'}">
+              		<a   href="http://10.88.24.231:7000/Easy7/apps/WebClient/dijit/templates/WfrmVideoEx_test.html?gbId=${item['jzcode']}&amp;gbCaption=${item['sldwmc']}" target="_blank"><span class="text-primary" ><c:out value="${colTxt}" /></span></a>
+              	</c:when>
+              	<c:otherwise>
+              		<c:out value="${colTxt}" />
+              	</c:otherwise>
+              </c:choose>
+             </td>
+           
+          <c:if test="${num.count mod 2==0 }">
+          	<c:out value="&lt;/tr&gt;" escapeXml="false"></c:out>
+           </c:if>
+          
+          </c:forTokens>
+          </c:if>
+         </c:if>
+         <c:if test="${islist}">
+            <c:if test="${not empty ajhas}">
+            <c:set var="ajlx" value="${item['ajlx']}" />
+            </c:if>
+            </c:if>
+      </c:forEach>
+   
+<tr style="display:none">
+<td>
+            <spring:url value="${path}/${itemId}" var="show_form_url" />
+            <spring:url value="/resources/images/show.png" var="show_image_url" />
+            <spring:message arguments="${typeName}" code="entity_show" var="show_label" htmlEscape="false" />
+            <c:if test="${noshow==false }">
+             <a href="${show_form_url}" alt="${fn:escapeXml(show_label)}" title="${fn:escapeXml(show_label)}">
+              <img alt="${fn:escapeXml(show_label)}" class="image" src="${show_image_url}" title="${fn:escapeXml(show_label)}" />
+            </a> 
+            </c:if>
+            </td>
+             <c:if test="${islist}">
+             <td>
+            	<c:if test="${ajlx=='01' }">
+            	 <spring:url value="/ajgbjbxxes" var="list1_form_url" />
+            	</c:if>
+             <c:if test="${ajlx=='02' }">
+            	 <spring:url value="/xzajgbjbxxes" var="list1_form_url" />
+            	</c:if>
+            	
+            <spring:url value="/resources/images/show.png" var="show_image_url" />
+            <c:if test="${isshowlist }">
+            <spring:message arguments="${typeName}" code="entity_show" var="show_label" htmlEscape="false" />
+            <a href="${list1_form_url}" alt="${fn:escapeXml(show_label)}" title="返回列表页面">
+              <img alt="返回列表页面" class="image" src="${show_image_url}" title="返回列表页面" />
+            </a>
+            </c:if>
+            </td>
+             </c:if>
+          </tr>
+           </table>
+  </c:if>
+<script>
+
+ function showaj(param1,param2){
+	
+	 $.ajax({
+			type : "POST",
+			url : "/web/AjRelatedAllInfo/cmd=getInfo",
+			data : {iidd:param2,table:param1},
+			dataType : "json",
+			success : function(map) {
+				$.each(map,function(key,values){
+					
+					$(values).each(
+					function(){
+						alert(this.ajbh);
+					});
+				});
+				
+			}
+		});
+	
+ }
+</script>
+
+</jsp:root>

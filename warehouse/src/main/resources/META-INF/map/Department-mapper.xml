@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Department" >
+	<resultMap type="Department" id="departmentMap">
+		<id column="department_id" property="department_id" />
+		<result column="department_code" property="department_code"/>
+		<result column="department_name" property="department_name"/>
+		<result column="parent_id" property="parent_id"/>
+		<result column="department_order" property="department_order"/>
+		<result column="isDel" property="isDel"/>
+		<result column="state" property="state"/>
+		<!-- <result column="fz_department_id" property="fz_department_id"/>
+		<result column="zh_department_id" property="zh_department_id"/> -->
+		<!-- <result column="isdcdw" property="isdcdw"/> -->
+	</resultMap>
+	
+	<select id="allTree" resultMap="departmentMap" parameterType="String">
+		select * from  sys_department r where r.isDel != 1 and r.parent_id !=0  order by r.department_order
+	</select>
+	<select id="selectTreeGrids" resultMap="departmentMap">
+		select * from sys_department  where isDel != 1 order by department_order
+	</select>
+	
+	<!-- 查询全部 -->
+	<select id="selectTreeGrid" resultMap="departmentMap" parameterType="map">
+		
+			select case when (select count(1) from sys_department where parent_id = der.department_id) > 0
+			then 'closed' else 'open' end as state,
+			der.* from sys_department der 
+			<where>
+				and der.isDel != 1
+					<if test="department_name !=null and department_name !=''">der.department_name = #{department_name}</if>		
+					<if test="parent_id !=null and parent_id !=''">and der.parent_id=#{parent_id}</if>
+			</where>
+		
+	</select>
+	
+	<!-- 条件分页查询 -->
+	<select id="selectByCondition" resultMap="departmentMap" parameterType="map">
+			select der.* from sys_department der
+			<where>
+				der.isDel=0
+				<if test="parent_id !=null and parent_id !=''">and der.parent_id=#{parent_id}</if>
+			</where>
+		order by s.department_order
+	</select>
+	
+	<!-- 查询父级 -->
+	<select id="selectChilds" resultMap="departmentMap" parameterType="String">
+		select case when (select count(1) from sys_department where parent_id = der.department_id) > 0
+		then 'closed' else 'open' end as state,der.* 
+		from sys_department der 
+		where der.isDel != 1 and  der.parent_id = #{parent_id} order by der.department_order
+		
+	</select>
+	
+<!-- 	<select id="selectAll" resultMap="departmentMap">
+		select * from sys_department where isDel ! = 1 order by department_order
+	</select> -->
+	
+	<select id="selectAll" resultMap="departmentMap">
+		select * from sys_department where isDel != 1 order by department_order
+	</select>
+	
+	<select id="countByCondition" resultType="int" parameterType="map">
+			select count(*) from sys_department der
+			<where>
+				 <if test="DepartmentForm!=null">
+					<if test="DepartmentForm.parent_id!=null and DepartmentForm .parent_id!=''">and der.parent_id = #{DepartmentForm.parent_id}</if>				 
+				 </if>
+				 <if test="department_code!=null and department_code!=''">and der.department_code = #{department_code}</if>
+			</where>
+	</select>
+	
+	
+	
+	<insert id="insert" parameterType="Department">
+		insert into sys_department(
+			department_id,department_code,department_name,parent_id,department_order,isDel
+		)
+		values(
+			#{department_id},#{department_code},#{department_name},#{parent_id},#{department_order},#{isDel}
+		)
+	</insert>
+	
+	
+	<update id="update" parameterType="Department">
+		update sys_department
+		<set>   
+			<if test="department_code!= null and department_code!=''">department_code = #{department_code},</if>
+			<if test="department_name!= null and department_name!=''">department_name = #{department_name},</if>
+			<if test="department_order!= null and department_order!=''">department_order = #{department_order},</if>
+			<if test="isDel!= null and isDel!=''">isDel = #{isDel},</if>
+			<if test="parent_id!= null and parent_id!=''">parent_id = #{parent_id},</if>
+			
+		</set>
+		where department_id=#{department_id}
+	</update>
+	
+	
+	 <delete id="delete" parameterType="String">
+		update sys_department set isDel= 1 where department_id=#{department_id} or parent_id = #{department_id}
+	</delete> 
+	
+	<!-- <delete id="delete" parameterType="string">
+		delete from sys_department where department_id = #{department_id} or  parent_id = #{parent_id}
+	</delete> -->
+	
+	<select id="selectByParentId" resultMap="departmentMap" parameterType="String">
+		select * from sys_department where isDel !=1 and parent_id = #{parent_id}
+		  order by department_order asc
+	</select>
+	
+	
+	<select id="selectByCode" resultMap="departmentMap" parameterType="string">
+		select * from sys_department where department_code = #{department_code} and isDel != 1
+	</select> 
+	
+	
+	
+	<select id="selectByDeptname" resultMap="departmentMap" parameterType="string">
+		select * from sys_department where department_name = #{deptname} and isDel != 1 
+	</select> 
+	
+	
+	<select id="selectByPk" resultMap="departmentMap" parameterType="string">
+		select * from sys_department der where der.department_id=#{department_id} and isDel != 1
+	</select>
+	<select id="selectByID" resultMap="departmentMap" parameterType="string">
+		select * from sys_department der where der.department_id=#{department_id} and isDel != 1
+	</select>
+	
+	<!-- 部门二维码信息 -->
+	<select id="selectEwmBm" resultType="EwmForm" parameterType="list">
+		select dep.department_id as lydw_id, dep.department_name as lydw_name
+		from sys_department dep 
+		where dep.department_id in 
+		<foreach collection="list" item="department_id" open="(" close=")" separator=",">
+			#{department_id}
+		</foreach>
+		 and isDel=0
+	</select>
+</mapper>

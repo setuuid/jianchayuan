@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Role">
+	<resultMap type="Role" id="roleMap">
+		<id column="role_id" property="role_id"/>
+		<result column="role_name" property="role_name"/>
+		<result column="isDel" property="isDel"/>
+		<result column="role_level" property="role_level"/>
+		<result column="description" property="description"/>
+		<!-- <result column="seq" property="seq"/> -->
+		<association column="department_id" property="department" javaType="Department">
+       		<id column="department_id" property="department_id" />
+			<result column="department_code" property="department_code"/>
+			<result column="department_name" property="department_name"/>
+        </association> 
+		<collection property="resources" ofType="Resource" column="role_id">
+	       	<id column="resource_id" property="resource_id"/>
+			<result column="resource_code" property="resource_code"/>
+			<result column="resource_name" property="resource_name"/>
+			<result column="type" property="type"/>
+			<result column="value" property="valuea"/>
+			<result column="parent_id" property="parent_id"/>
+			<result column="seq" property="seq"/>
+			<result column="resource_icon" property="resource_icon"/>
+			<result column="state" property="state"/>
+	    </collection> 
+	</resultMap>
+	<select id="selectAll" resultMap="roleMap">
+		select * from sys_role r where r.isDel != 1 
+	</select>
+	<select id="selectByCondition" resultMap="roleMap" parameterType="Map">
+			select * from sys_role ro
+			<!-- inner join sys_department d on d.department_id = ro.department_id -->
+			<where>  
+				ro.isDel !=1
+				<if test="role_name !=null and role_name !=''">and ro.role_name like '%${role_name}%'</if>
+				<if test="role_level!=null and role_level!=''">and ro.role_level = #{role_level}</if>
+			</where>
+			
+	</select>
+	
+	<select id="selectByConditionA" resultMap="roleMap" parameterType="Map">
+		select * from(
+			select ro.*,d.department_name,ROW_number()OVER(order by ro.role_id) r from sys_role ro
+			inner join sys_department d on d.department_id = ro.department_id
+			<where>  ro.isDel !=1
+				<if test="RoleForm.department_id!=null and RoleForm.department_id!=''">and ro.department_id = #{RoleForm.department_id}</if>
+				<if test="RoleForm.role_name !=null and RoleForm.role_name !=''">and ro.role_name = #{RoleForm.role_name}</if>
+				<if test="RoleForm.role_level !=null and RoleForm.role_level !=''">and ro.role_level = #{RoleForm.role_level}</if>
+			</where>
+			
+		)s where 1=1 order by s.role_name
+	</select>
+	<select id="countByCondition" resultType="int" parameterType="map">
+		select count(*) from sys_role ro 
+		<where>  
+			ro.isDel !=1
+			<if test="RoleForm.role_name !=null and RoleForm.role_name !=''">and ro.role_name like '%'||#{RoleForm.role_name}||'%'</if>
+			<if test="RoleForm.role_level!=null and RoleForm.role_level!=''">and ro.role_level = #{RoleForm.role_level}</if>
+		</where>
+	</select>
+	<select id="selectByPk" resultMap="roleMap" parameterType="string">
+		select * from sys_role r
+		where r.role_id=#{role_id}
+	</select>
+	<insert id="insert" parameterType="Role">
+		insert into sys_role(
+			role_id,role_name,isDel,department_id,role_level,description
+		)
+		values(
+			#{role_id},#{role_name},#{isDel},#{department.department_id},#{role_level},
+			#{description}
+		)
+	</insert>
+	<update id="update" parameterType="Role">
+		update sys_role
+		<set>
+			<if test="role_name!=null and role_name !=''">role_name=#{role_name},</if>
+			<if test="role_level!=null and role_level !=''">role_level=#{role_level},</if>
+			<if test="description !=null and description !=''">description=#{description}</if>
+		</set>
+		where role_id=#{role_id}
+	</update>
+	<delete id="delete" parameterType="string">
+		update sys_role set isDel=1 where role_id=#{role_id}
+	</delete>
+	<select id="selectFj" resultMap="roleMap" parameterType="Role">
+		select * from sys_role r
+		left join sys_role_resource rr on rr.role_id = r.role_id
+		left join sys_resource re on re.resource_id = rr.resource_id
+		where r.department_id=#{department.department_id} and r.role_level=#{role_level}
+	</select>
+	
+	<select id="countFj" resultType="int" parameterType="Role">
+		select count(*) from sys_role r
+		where r.department_id=#{department.department_id} and r.role_level=#{role_level}
+		<if test="role_id !=null and role_id !=''">
+		and r.role_id != #{role_id}
+		</if> 
+	</select>
+	<!-- 查询角色资源 -->
+	<select id="selectRoleResource" resultMap="roleMap" parameterType="String">
+		select * from sys_role r
+		left join sys_role_resource rr on rr.role_id = r.role_id
+		left join sys_resource re on rr.resource_id = re.resource_id 
+		where r.role_id = #{id} and r.isDel != 1
+	</select>
+	
+</mapper>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Hjxxld" >
+	<resultMap type="Hjxxld" id="hjxxldMap">
+		<id column="hjxxid" property="hjxxid" />
+		<result column="ckmc" property="ckmc"/>
+		<result column="name" property="name"/>
+		<result column="hjbm" property="hjbm"/>
+		<result column="cjsj" property="cjsj"/>
+		<result column="isdel" property="isdel"/>
+		<result column="ckmcName" property="ckmcName"/>
+	</resultMap>              
+
+	  <!--根据id查询货架信息  -->         
+	<select id="selectHjId" resultMap="hjxxldMap" parameterType="string">
+		select * from hjxxld
+		<where>
+			<if test="hjxxid != null and hjxxid != ''">hjxxid = #{hjxxid}</if>
+		</where>
+	</select>
+         
+	<!-- selectByPk -->
+	<select id="findById" resultMap="hjxxldMap" parameterType="String">
+		select h.*,s.dictionary_name ckmcName
+		from hjxxld h ,sys_dictionary s 
+		<where>
+			h.isdel = 'N' 
+			and s.isdel='0' 
+			and h.ckmc=s.dictionary_id 
+			and hjxxid = #{id}
+		</where>
+	</select>
+	<select id="selectByCondition" resultMap="hjxxldMap" parameterType="Map">
+		select h.*,s.dictionary_name ckmcName
+		from hjxxld h ,sys_dictionary s
+		<where>
+			h.isdel = 'N' and s.isdel='0' and h.ckmc=s.dictionary_id
+			<if test="ckmc !=null and ckmc !=''">and s.dictionary_id = #{ckmc}</if>
+			<if test="name !=null and name !=''">and h.name like concat('%',#{name},'%') </if>
+			<if test="hjbm !=null and hjbm !=''">and h.hjbm like concat('%',#{hjbm},'%')</if>
+			<if test="beginDate != null">and h.cjsj &gt;= #{beginDate} </if>
+			<if test="endDate != null ">and h.cjsj &lt;= #{endDate}</if>
+		</where>
+		order by h.name
+	</select> 
+
+
+	<select id="selectAll" resultMap="hjxxldMap">
+		select * from hjxxld where isdel='N'
+	</select>
+	
+	<delete id="delete" parameterType="String">
+		update hjxxld set isdel = 'Y' 
+		where hjxxid =#{id}
+	</delete> 
+	<!-- 货架信息查询 -->
+	<select id="selectHjInfor" resultMap="hjxxldMap">
+	<!-- select * from Hjxxld where hjxxid  not in (select hjxxid from crkjlb where hjxxid is NOT null and sbid!=''); -->
+	select * from Hjxxld where isdel='N'
+	</select>
+	
+	
+	<insert id="insert" parameterType="Hjxxld">
+		insert into hjxxld(
+			hjxxid,ckmc,name,hjbm,cjsj,isdel
+		)
+		values(
+			#{hjxxid},#{ckmc},#{name},#{hjbm},#{cjsj},#{isdel}
+		)
+	</insert>
+	<update id="update" parameterType="Hjxxld">
+		update hjxxld
+		<set>
+			<if test="ckmc != null and ckmc != ''">ckmc = #{ckmc},</if>
+			<if test="name != null and name != ''">name = #{name},</if>
+			<if test="hjbm != null and hjbm != ''">hjbm = #{hjbm},</if>
+			<if test="cjsj != null ">cjsj = #{cjsj}</if>
+		</set>
+		where hjxxid = #{hjxxid}
+	</update>
+	
+	<!-- 货架二维码信息 -->
+	<select id="selectEwmHj" resultType="EwmForm" parameterType="list">
+		select d.dictionary_name as hj_ckname,h.name as hj_hjname,
+		h.hjbm as hj_bm,h.hjxxid as hj_id
+		from hjxxld h
+		left join sys_dictionary d on h.ckmc = d.dictionary_id and d.isDel=0
+		where h.hjxxid in 
+		<foreach collection="list" item="hjxxid" open="(" close=")" separator=",">
+			#{hjxxid}
+		</foreach>
+		and h.isdel='N'
+	</select>
+	
+	
+</mapper>

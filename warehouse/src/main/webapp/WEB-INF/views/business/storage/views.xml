@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+    <definition extends="easyuidefault" name="business/storage/query">
+        <put-attribute name="body" value="/WEB-INF/views/business/storage/query.jsp"/>
+    </definition>
+    <definition extends="easyuidefault" name="business/storage/zcdrquery">
+        <put-attribute name="body" value="/WEB-INF/views/business/storage/zcdrquery.jsp"/>
+    </definition>
+    <definition extends="easyuidefault" name="business/storage/sbghquery">
+        <put-attribute name="body" value="/WEB-INF/views/business/storage/sbghquery.jsp"/>
+    </definition>
+   
+</tiles-definitions>

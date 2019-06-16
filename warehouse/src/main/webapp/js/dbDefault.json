@@ -1,0 +1,50 @@
+{
+	"total":4,"rows":[
+    {
+        "fieldName": "id",
+        "length": 36,
+        "pointLength": 0,
+        "type": "string",
+        "content": "主键",
+        "fieldDefault": "",
+        "isKey":"Y",
+        "isNull":"N",
+        "showType":"mini-hidden",
+        "orderNum": 0
+    },
+    {
+        "fieldName": "activiti_state",
+        "length": 50,
+        "pointLength": 0,
+        "type": "string",
+        "content": "审批状态",
+        "fieldDefault": "1",
+        "isKey":"N",
+        "isNull":"N",
+        "showType":"mini-hidden",
+        "orderNum": 1
+    },
+    {
+        "fieldName": "create_name",
+        "length": 50,
+        "pointLength": 0,
+        "type": "string",
+        "content": "创建人名称",
+        "fieldDefault": "",
+        "isKey":"N",
+        "isNull":"Y"
+    },
+	{
+        "fieldName": "create_by",
+        "length": 50,
+        "pointLength": 0,
+        "type": "string",
+        "content": "创建人登录名称",
+        "fieldDefault": "",
+        "isKey":"N",
+        "isNull":"Y"
+    }
+    
+]
+}
+

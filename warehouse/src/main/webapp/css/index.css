@@ -1,0 +1,77 @@
+body {
+	background-color: #fff;
+	color: #000;
+	font-size: 14px;
+	font-family: 微软雅黑;
+}
+a,a:hover,a:active,a:link,a:visited {
+	text-decoration: none;
+}
+/*左侧菜单*/
+.sidebar-menu{
+	border: 1px solid #e1e1e1;
+	border-top-width: 0px;
+	border-radius: 6px;
+	margin-left: 10px;
+}
+/* .nav-list li:first-child a{
+	border-radius: 6px 6px 0 0;
+}
+.nav-list li:last-child a{
+	border-radius: 0 0 6px 6px;
+} */
+.sidebar-list li a{
+	border-radius: 6px 6px 6px 6px;
+}
+.menu-second li a{
+	border-radius: 0;
+}
+.menu-second li:last-child a{
+	border-radius: 0;
+} 
+/*一级菜单*/
+.menu-first{
+	background-color: #fff;
+	border-top: 1px solid #e1e1e1;
+	font-weight: bold;
+	display: block;
+}
+/*一级菜单鼠标划过状态*/
+.menu-first:hover{
+	border-bottom: 1px solid #337ab7;
+}
+/*二级菜单*/
+.menu-second li a{
+	border-top: 1px solid #e1e1e1;
+}
+/*二级菜单鼠标划过样式*/
+.menu-second li a:hover {
+	text-decoration: none;
+	background-color: #e1e1e1;
+	border-right: 2px solid #337ab7;
+}
+.ui-layout-toggler {  
+	border: 0.5px solid #cccccc;   
+	background-color: #000000;  
+	opacity: .60;  
+	filter:  alpha(opacity=60);  
+}  
+.ui-layout-toggler .content {   
+	color: #ffffff;       
+}
+ .ui-layout-resizer  {   
+	background: #F1F1F1;  
+}  
+.navbar {
+	border-radius: 0;
+}
+.navbar-default {
+	background-color: #0050ef !important;
+	border-color: #0050ef;
+}
+.navbar-default .navbar-brand {
+	color:#ffffff;
+}
+.navbar-default .navbar-nav>li>a {
+	color:#ffffff;
+}

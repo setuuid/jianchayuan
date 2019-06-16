@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:menu="urn:jsptagdir:/WEB-INF/tags/menu" id="menu" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <menu:menu id="_menu" z="nZaf43BjUg1iM0v70HJVEsXDopc=">
+        <menu:category id="c_sacwwpgbjbxx" z="qXwFKJg3zjM27twJ1Y6PwuPxrgw=">
+            <menu:item id="i_ajxsdbz_list" messageCode="global_menu_list"
+                       url="/ajxsdbzes?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="9TPDR/29SfcbV0Q5tBHb0n6Znzg="/>
+            <menu:item id="i_sacwwpgbjbxx_list" messageCode="global_menu_list"
+                       url="/sacwwpgbjbxxes?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="qDq1dOICzQC0ge6fS2bW7nMDl8s="/>
+            <menu:item id="i_rkywbar_list" messageCode="global_menu_list"
+                       url="/rkywbars?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="h214uVaex/aB8YgYlVXA1XtOWWM="/>
+            <menu:item id="i_rkywshr_list" messageCode="global_menu_list"
+                       url="/rkywshrs?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="8vji1oX6QijtB8jwU17ODVc7pwI="/>
+            <menu:item id="i_rkywxyr_list" messageCode="global_menu_list"
+                       url="/rkywxyrs?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="zyCFvvE3Ip2SW7XPXyt006RntSo="/>
+            <menu:item id="i_rkywzr_list" messageCode="global_menu_list"
+                       url="/rkywzrs?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="GgdKT4Kd3uwj65qLAmnA3B+sMps="/>
+            <menu:item id="i_moduleyewuyiyouwenshu_list" messageCode="global_menu_list"
+                       url="/moduleyewuyiyouwenshus?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="ULbwgdcFO671kzizz0EaEzZtwUo="/>
+            <menu:item id="i_jgywsadw_list" messageCode="global_menu_list"
+                       url="/jgywsadws?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="aA+yQ1y83w7MHDsk7/35VvKTsb4="/>
+            <menu:item id="i_jgywshdw_list" messageCode="global_menu_list"
+                       url="/jgywshdws?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="06+3beqGZ4R5iuZBNfdhka30mJQ="/>
+            <menu:item id="i_ajgbjbxx_list" messageCode="global_menu_list"
+                       url="/ajgbjbxxes?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="F0PuKF9GuDNGXxoYPOJqSFYaYxg="/>
+            <menu:item id="i_ajxsjlz_list" messageCode="global_menu_list"
+                       url="/ajxsjlzes?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="vbf/s3kQO5RMFXe+7N3t6o10HjE="/>
+            <menu:item id="i_ajxsqbhsjd_list" messageCode="global_menu_list"
+                       url="/ajxsqbhsjds?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="eQvLvo8QczpK4KNL7fYStyH+6fA="/>
+            <menu:item id="i_ajxsjsjzjd_list" messageCode="global_menu_list"
+                       url="/ajxsjsjzjds?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="1nEQcARLA68tQe8yUTghky5JfSs="/>
+            <menu:item id="i_ajxsjcz_list" messageCode="global_menu_list"
+                       url="/ajxsjczes?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="kar2ae6CKCE5KFvf7ym0S3o2FGc="/>
+            <menu:item id="i_ajxsjltz_list" messageCode="global_menu_list"
+                       url="/ajxsjltzes?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="xUk2ZrE3Ssq9GIKbH88qOy14gIc="/>
+            <menu:item id="i_ajxsqbhsbzs_list" messageCode="global_menu_list"
+                       url="/ajxsqbhsbzses?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="39W5iuA7/buP8RiiNsfkgVRBmko="/>
+            <menu:item id="i_ajxsycjlqxtzs_list" messageCode="global_menu_list"
+                       url="/ajxsycjlqxtzses?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="01Iys6+crYZpEuSQ7hb2msJYf/s="/>
+            <menu:item id="i_ajxsjsjzzdjs_list" messageCode="global_menu_list"
+                       url="/ajxsjsjzzdjses?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="hJ1wEalPqgO+gCxoCZ5L2MZDgEM="/>
+            <menu:item id="i_ajxsbgdbcstzs_list" messageCode="global_menu_list"
+                       url="/ajxsbgdbcstzses?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="qTBx3aybY8VuIttMpolCH2NYcqg="/>
+        </menu:category>
+        <menu:category id="c_oura">
+            <menu:item id="i_sysfunction_new" messageCode="global_menu_new" url="/sysfunctions?form"
+                       z="Hmcrh725Xs2Y2ZwjAosyFRffuGQ="/>
+            <menu:item id="i_sysfunction_list" messageCode="global_menu_list"
+                       url="/sysfunctions?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="rRomzyC6FhST+IX/qoWK3m3LNlU="/>
+            <menu:item id="i_sysrole_new" messageCode="global_menu_new" url="/sysroles?form"
+                       z="LKTMnnGq0G81B1dqh+fIGx7xB2s="/>
+            <menu:item id="i_sysrole_list" messageCode="global_menu_list"
+                       url="/sysroles?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="lTAKgBaMaha7UBcG9ORAb4dY1pw="/>
+            <menu:item id="i_userinfo_new" messageCode="global_menu_new" url="/userinfoes?form"
+                       z="jGpK8Q3EcXGhijBcCm+M83p+7PM="/>
+            <menu:item id="i_userinfo_list" messageCode="global_menu_list"
+                       url="/userinfoes?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="wTZf/0/g2xvsX1MjMAQwgE/LJmM="/>
+            <menu:item id="i_department_new" messageCode="global_menu_new" url="/departments?form"
+                       z="x4bXRWzpRon0gxaGDx0C9NMFiTo="/>
+            <menu:item id="i_department_list" messageCode="global_menu_list"
+                       url="/departments?page=1&amp;size=${empty param.size ? 10 : param.size}"
+                       z="IdvgdfyhAvavIvPXofJ59Z1JMK8="/>
+        </menu:category>
+
+        <menu:category id="c_ttjsjtbptgxfkdbnew">
+
+            <menu:item id="i_ttjsjtbptgxfkdbnew_list" messageCode="global_menu_list"
+                       url="/ttjsjtbptgxfkdbnews?page=1&amp;size=${empty param.size ? 10 : param.size}"/>
+        </menu:category>
+        <menu:category id="c_ttjsjtbptgxjjdbnew">
+
+            <menu:item id="i_ttjsjtbptgxjjdbnew_list" messageCode="global_menu_list"
+                       url="/ttjsjtbptgxjjdbnews?page=1&amp;size=${empty param.size ? 10 : param.size}"/>
+        </menu:category>
+        <menu:category id="c_ttjsjtbptgxcjdbnew" z="TIQ3NZR1rDiAfdQIWd8oyG1cy7o=">
+
+            <menu:item id="i_ttjsjtbptgxcjdbnew_list" messageCode="global_menu_list"
+                       url="/ttjsjtbptgxcjdbnews?page=1&amp;size=${empty param.size ? 10 : param.size}"/>
+        </menu:category>
+
+
+    </menu:menu>
+</div>
